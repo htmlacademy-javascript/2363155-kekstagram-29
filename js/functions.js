@@ -10,7 +10,7 @@ checkStringLength('проверяемая строка', 20);
 
 function isPalindrome(string) {
   const normalizedString = string.replaceAll(' ', '').toLowerCase();
-  const reversed = normalizedString.toLowerCase().split('').reverse().join('');
+  const reversed = normalizedString.split('').reverse().join('');
   return normalizedString === reversed;
 }
 
@@ -20,12 +20,12 @@ isPalindrome('А роза упала на лапу Азора');
 
 function extractionNumberFromString(string) {
   const checkString = String(string);
-  let numbers;
+  let elem;
   let result = '';
   for (const i in checkString) {
-    numbers = parseInt(checkString[i], 10);
-    if (!Number.isNaN(numbers)) {
-      result += numbers;
+    elem = parseInt(checkString[i], 10);
+    if (!Number.isNaN(elem)) {
+      result += elem;
     }
   }
   return result;
