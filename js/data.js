@@ -74,6 +74,6 @@ const createPost = () => ({
 });
 
 const createPostsData = Array.from({ length: MAX_GENERATED_OBJECT }, createPost);
-//const createPostsData = !
+//const createPostsData = ! generatePhotoId
 export { createPostsData };
 

@@ -19,10 +19,11 @@ const createComment = (avatar, message, name) => {
   const text = createElemet('p', 'social__text', message);
 
   const imageSize = 35;
-  image.style.width = `${imageSize}px`;
-  image.style.heigth = `${imageSize}px`;
+
   image.src = avatar;
   image.alt = name;
+  image.style.width = `${imageSize}px`;
+  image.style.heigth = `${imageSize}px`;
 
   listItem.append(image, text);
   return listItem;

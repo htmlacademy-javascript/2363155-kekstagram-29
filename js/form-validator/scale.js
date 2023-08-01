@@ -5,7 +5,7 @@ const fieldValue = modalElement.querySelector('.scale__control--value');
 const modalImage = document.querySelector('.img-upload__preview img');
 const STEP = 20;
 const MAX_SCALE = 100;
-const MIN_SCALE = 25;
+const MIN_SCALE = 20;
 let scaleValue = MAX_SCALE;
 
 const setScaleValue = () => {
