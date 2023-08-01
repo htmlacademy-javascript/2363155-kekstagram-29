@@ -73,7 +73,7 @@ const createPost = () => ({
   comments: Array.from({ length: getRandomInteger(0, MAX_GENERATED_OBJECT) }, createComment)
 });
 
-const postsData = Array.from({ length: MAX_GENERATED_OBJECT }, createPost);
-
-export { postsData };
+const createPostsData = Array.from({ length: MAX_GENERATED_OBJECT }, createPost);
+//const createPostsData = !
+export { createPostsData };
 

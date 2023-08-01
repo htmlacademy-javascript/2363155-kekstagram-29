@@ -1,46 +1,48 @@
 import { isEscapeKey } from './utils.js';
-import { postsData } from './data.js';
-import { createPictureModal } from './gallery-modal.js';
+import { createPictureModal, moreButton, onMoreButtonClick } from './gallery-modal.js';
+import { openModal, closeModal } from './popup.js';
+
 
 const posts = document.querySelector('.pictures');
 const modal = document.querySelector('.big-picture');
-const closeModal = modal.querySelector('.big-picture__cancel');
+const buttonCloseModal = modal.querySelector('.big-picture__cancel');
+const body = document.querySelector('body');
 
-const closePictureModal = () => {
-  modal.classList.add('hidden');
-  closeModal.removeEventListener('click', closePictureModal);
 
-  document.body.classList.remove('modal-open');
+const onCloseButtonClick = () => {
+  closeModal(modal, body);
+  buttonCloseModal.removeEventListener('click', onCloseButtonClick);
+  moreButton.removeEventListener('click', onMoreButtonClick);
   document.removeEventListener('keydown', onDocumentKey);
 };
 
 
-const openPictureModal = () => {
-  modal.classList.remove('hidden');
+const onLinkClick = () => {
+  openModal(modal, body);
   document.addEventListener('keydown', onDocumentKey);
-  closeModal.addEventListener('click', closePictureModal);
-
-  document.body.classList.add('modal-open');
+  buttonCloseModal.addEventListener('click', onCloseButtonClick);
 };
 
 function onDocumentKey (evt) {
   if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closePictureModal();
+    onCloseButtonClick();
   }
 }
 
-posts.addEventListener('click', (evt) => {
-  const target = evt.target.closest('.picture');
-  let postId;
+const renderGallery = (picture) => {
+  posts.addEventListener('click', (evt) => {
+    const target = evt.target.closest('.picture');
+    let postId;
+    if (target !== null) {
+      postId = Number(target.dataset.id);
+      const postData = picture.find((post) => post.id === postId);
+      evt.preventDefault();
 
-  if (target !== null) {
-    postId = Number(target.dataset.id);
-    const postData = postsData.find((post) => post.id === postId);
+      createPictureModal(postData);
+    }
+  });
+};
 
-    createPictureModal(postData);
-  }
-});
 
-export { openPictureModal, modal };
+export { onLinkClick, renderGallery };
 
