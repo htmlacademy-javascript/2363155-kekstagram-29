@@ -1,13 +1,15 @@
-import { addEffect} from './slider.js';
 import { openModalForm } from '../upload.js';
+const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
+const MAX_COUNT_HASHTAGS = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const submitButton = document.querySelector('.img-upload__submit');
 const form = document.querySelector('.img-upload__form');
 const input = form.querySelector('.img-upload__input');
 const hashtag = form.querySelector('.text__hashtags');
 const description = form.querySelector('.text__description');
-const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
-const MAX_COUNT_HASHTAGS = 5;
-const normalizeString = (str) => str.trim().split(' ').filter((tag) => Boolean(tag.length));
+const preview = document.querySelector('.img-upload__preview img');
+const effects = document.querySelectorAll('.effects__preview');
+
 const VALIDATOR_PARAMS = {
   hashtagSymbols: {
     isValid: (value) => normalizeString(value).every((tag) => VALID_SYMBOLS.test(tag)),
@@ -22,7 +24,7 @@ const VALIDATOR_PARAMS = {
   },
   hashtagLength: {
     isValid:  (value) => normalizeString(value).length <= MAX_COUNT_HASHTAGS,
-    errorText: `Неправильный Хэштег ${MAX_COUNT_HASHTAGS}`
+    errorText: `Неправильный Хэштег  ${MAX_COUNT_HASHTAGS}`
   },
   descriptionLength: {
     isValid: (value) => value.length <= 140,
@@ -34,6 +36,9 @@ const SubmitButtonText = {
   LOADING: 'Отправляю...'
 };
 
+function normalizeString (str) {
+  return str.trim().split(' ').filter((tag) => Boolean(tag.length));
+}
 
 const onClickButtonForm = () => openModalForm();
 
@@ -78,19 +83,7 @@ form.addEventListener('input', () => {
   submitButton.disabled = !pristine.validate();
 });
 
-const cancellationOfSending = () => {
-  hashtag.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.stopPropagation();
-    }
-  });
-
-  description.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      evt.stopPropagation();
-    }
-  });
-};
+const isElementFocused = () => document.activeElement === hashtag || document.activeElement === description;
 
 const toggleSubmit = (isDisabled) => {
   submitButton.disabled = isDisabled;
@@ -109,8 +102,19 @@ const setFormSubmit = (onSuccess) => {
     }
   });
 
-  input.addEventListener('change', onClickButtonForm);
-  addEffect();
+  input.addEventListener('change',() => {
+    const file = input.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      preview.src = URL.createObjectURL(file);
+      effects.forEach((item) => (item.style.backgroundImage = `url(${preview.src})`));
+    }
+    onClickButtonForm();
+  });
 };
 
-export { setFormSubmit, pristineReset, cancellationOfSending };
+export { setFormSubmit, pristineReset, isElementFocused };
+

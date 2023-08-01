@@ -1,5 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
-//Random integer
+const TIMEOUT_DELAY = 500;
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -27,7 +28,7 @@ function createRandomIdFromRangeGenerator (min, max) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const createElemet = (tagName, className, text) => {
+const createElement = (tagName, className, text) => {
   const element = document.createElement(tagName);
   element.classList.add(className);
 
@@ -58,10 +59,20 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const debounce = (callback) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
+  };
+};
+
 export { createRandomIdFromRangeGenerator,
   getRandomArrayElement,
   getRandomInteger,
   isEscapeKey,
-  createElemet,
-  showAlert
+  createElement,
+  showAlert,
+  debounce
 };
