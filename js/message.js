@@ -1,8 +1,6 @@
-import { isEscapeKey } from './utils.js';
 const thumbnailError = document.querySelector('#error').content.querySelector('.error');
-const thumbnailSuccess = document.querySelector('#success')
-  .content
-  .querySelector('.success');
+
+const thumbnailSuccess = document.querySelector('#success').content.querySelector('.success');
 
 const body = document.querySelector('body');
 
@@ -29,7 +27,7 @@ function onBodyClick(evt) {
 }
 
 function onDocumentKey(evt) {
-  if (isEscapeKey(evt)) {
+  if (evt.key === 'Escape') {
     evt.preventDefault();
     hideMessage();
   }

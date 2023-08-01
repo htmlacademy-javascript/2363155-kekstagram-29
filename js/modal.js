@@ -1,21 +1,18 @@
 import { isEscapeKey } from './utils.js';
-import { createPictureModal, moreButton, onMoreButtonClick } from './gallery-modal.js';
-
+import { createPictureModal, modalMoreButton, onMoreButtonClick } from './gallery-modal.js';
 
 const posts = document.querySelector('.pictures');
 const modal = document.querySelector('.big-picture');
 const buttonCloseModal = modal.querySelector('.big-picture__cancel');
 const body = document.querySelector('body');
 
-
 const onCloseButtonClick = () => {
   modal.classList.add('hidden');
   body.classList.remove('modal-open');
   buttonCloseModal.removeEventListener('click', onCloseButtonClick);
-  moreButton.removeEventListener('click', onMoreButtonClick);
+  modalMoreButton.removeEventListener('click', onMoreButtonClick);
   document.removeEventListener('keydown', onDocumentKey);
 };
-
 
 const onLinkClick = () => {
   modal.classList.remove('hidden');
@@ -30,13 +27,13 @@ function onDocumentKey (evt) {
   }
 }
 
-const renderGallery = (picture) => {
+const renderModal = (pictures) => {
   posts.addEventListener('click', (evt) => {
     const target = evt.target.closest('.picture');
     let postId;
     if (target !== null) {
       postId = Number(target.dataset.id);
-      const postData = picture.find((post) => post.id === postId);
+      const postData = pictures.find((post) => post.id === postId);
       evt.preventDefault();
 
       createPictureModal(postData);
@@ -44,5 +41,4 @@ const renderGallery = (picture) => {
   });
 };
 
-
-export { onLinkClick, renderGallery };
+export { onLinkClick, renderModal };
