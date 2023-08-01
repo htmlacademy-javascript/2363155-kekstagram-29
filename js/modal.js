@@ -3,11 +3,11 @@ import { postsData } from './data.js';
 import { createPictureModal } from './gallery-modal.js';
 
 const posts = document.querySelector('.pictures');
-const bigPicture = document.querySelector('.big-picture');
-const closeModal = bigPicture.querySelector('.big-picture__cancel');
+const modal = document.querySelector('.big-picture');
+const closeModal = modal.querySelector('.big-picture__cancel');
 
 const closePictureModal = () => {
-  bigPicture.classList.add('hidden');
+  modal.classList.add('hidden');
   closeModal.removeEventListener('click', closePictureModal);
 
   document.body.classList.remove('modal-open');
@@ -16,7 +16,7 @@ const closePictureModal = () => {
 
 
 const openPictureModal = () => {
-  bigPicture.classList.remove('hidden');
+  modal.classList.remove('hidden');
   document.addEventListener('keydown', onDocumentKey);
   closeModal.addEventListener('click', closePictureModal);
 
@@ -42,4 +42,5 @@ posts.addEventListener('click', (evt) => {
   }
 });
 
-export { openPictureModal };
+export { openPictureModal, modal };
+

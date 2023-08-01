@@ -1,3 +1,4 @@
+//Random integer
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -38,3 +39,4 @@ const createElemet = (tagName, className, text) => {
 
 
 export { createRandomIdFromRangeGenerator, getRandomArrayElement, getRandomInteger, isEscapeKey, createElemet };
+
