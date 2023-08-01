@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator } from './util.js';
+import { getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator } from './utils.js';
 // Const
 const MAX_GENERATED_OBJECT = 25;
 const MIN_PHOTO_NUMBER = 1;
@@ -49,32 +49,31 @@ const COMMENTS_MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const generatePhotosId = createRandomIdFromRangeGenerator(MIN_PHOTO_NUMBER, MAX_PHOTO_NUMBER);
-const generateCommentsId = createRandomIdFromRangeGenerator(1, 1000);
-const generatePostsId = createRandomIdFromRangeGenerator(1, MAX_GENERATED_OBJECT);
+const getCommentText = () => Array.from({length: getRandomInteger(1, 3)}, () => getRandomArrayElement(COMMENTS_MESSAGE)).join(' ');
 
 // Create comment
 
+const generateCommentsId = createRandomIdFromRangeGenerator(1, 1000);
 const createComment = () => ({
   id: generateCommentsId(),
   avatar: `img/avatar-${getRandomInteger(MAX_AVATAR_NUMBER, MIN_AVATAR_NUMBER)}.svg`,
-  message: `${getRandomArrayElement(COMMENTS_MESSAGE)}`,
-  name: `${getRandomArrayElement(NAMES)}`,
+  message: `${getCommentText()}`,
+  name: `${getRandomArrayElement(NAMES)}`
 });
-
-createComment();
 
 // Create post foto
 
+let photoId = 1;
+const generatePostsId = createRandomIdFromRangeGenerator(MIN_PHOTO_NUMBER, MAX_PHOTO_NUMBER);
 const createPost = () => ({
   id: generatePostsId(),
-  url: `photos/${generatePhotosId()}.jpg`,
+  url: `photos/${photoId++}.jpg`,
   description: `${getRandomArrayElement(DESCRIPTION)}`,
   likes: getRandomInteger(MIN_LIKE_NUMBER, MAX_LIKE_NUMBER),
-  comments: Array.from({ length: getRandomInteger(0,MAX_GENERATED_OBJECT) }, createComment)
+  comments: Array.from({ length: getRandomInteger(0, MAX_GENERATED_OBJECT) }, createComment)
 });
 
-const createPosts = () => Array.from({ length: MAX_GENERATED_OBJECT }, createPost);
+const postsData = Array.from({ length: MAX_GENERATED_OBJECT }, createPost);
 
-export { createPosts };
+export { postsData };
 
