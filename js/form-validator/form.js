@@ -1,13 +1,8 @@
-import { isEscapeKey } from '../utils.js';
-import { resetScaleValue } from './scale.js';
-import { hidenSlider, addEffect, removeEffects } from './slider.js';
-import { openModal, closeModal } from '../popup.js';
+import { addEffect} from './slider.js';
+import { openModalForm } from '../upload.js';
 const submitButton = document.querySelector('.img-upload__submit');
-const bodyElement = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const input = form.querySelector('.img-upload__input');
-const formElement = form.querySelector('.img-upload__overlay');
-const closeForm = form.querySelector('.img-upload__cancel');
 const hashtag = form.querySelector('.text__hashtags');
 const description = form.querySelector('.text__description');
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
@@ -16,25 +11,31 @@ const normalizeString = (str) => str.trim().split(' ').filter((tag) => Boolean(t
 const VALIDATOR_PARAMS = {
   hashtagSymbols: {
     isValid: (value) => normalizeString(value).every((tag) => VALID_SYMBOLS.test(tag)),
-    errorText: 'The hashtag should start with the sign #'
+    errorText: 'Хэштег начинается с #'
   },
   hashtagUnique: {
     isValid: (value) => {
       const uniqHashtags = normalizeString(value).map((tag) => tag.toLowerCase());
       return uniqHashtags.length === new Set(uniqHashtags).size;
     },
-    errorText: 'Hashtags should not be repeated'
+    errorText: 'Хэштеги не должны повторяться'
   },
   hashtagLength: {
     isValid:  (value) => normalizeString(value).length <= MAX_COUNT_HASHTAGS,
-    errorText: `Maximum number of hashtags ${MAX_COUNT_HASHTAGS}`
+    errorText: `Максимум Хэштегов ${MAX_COUNT_HASHTAGS}`
   },
   descriptionLength: {
     isValid: (value) => value.length <= 140,
-    errorText: 'The maximum comment length is 140 characters'
+    errorText: 'Комментарий не более 140 символов'
   }
 };
+const SubmitButtonText = {
+  DEFAULT: 'Отправить',
+  LOADING: 'Отправляю...'
+};
 
+
+const onClickButtonForm = () => openModalForm();
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -46,7 +47,6 @@ pristine.addValidator(
   VALIDATOR_PARAMS.descriptionLength.isValid,
   VALIDATOR_PARAMS.descriptionLength.errorText
 );
-
 
 pristine.addValidator(
   hashtag,
@@ -72,26 +72,11 @@ pristine.addValidator(
   true
 );
 
+const pristineReset = () => pristine.reset();
 
 form.addEventListener('input', () => {
   submitButton.disabled = !pristine.validate();
 });
-
-const onCloseButtonClick = () => {
-  form.reset();
-  pristine.reset();
-  removeEffects();
-  resetScaleValue();
-  closeModal(formElement, bodyElement);
-  document.removeEventListener('keydown', onDocumentKey);
-};
-
-const onFormClick = () => {
-  hidenSlider();
-  openModal(formElement, bodyElement);
-  document.addEventListener('keydown', onDocumentKey);
-  closeForm.addEventListener('click', onCloseButtonClick);
-};
 
 const cancellationOfSending = () => {
   hashtag.addEventListener('keydown', (evt) => {
@@ -107,25 +92,24 @@ const cancellationOfSending = () => {
   });
 };
 
-function onDocumentKey (evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    onCloseButtonClick();
-    cancellationOfSending();
-  }
-}
-
-const initImage = () => {
-  form.addEventListener('submit', (evt) => {
+const toggleSubmit = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContent = isDisabled ? SubmitButtonText.LOADING : SubmitButtonText.DEFAULT;
+};
+const setFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', async(evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
 
     if (isValid) {
-      // console.log('Отправить');
+      toggleSubmit(true);
+      await onSuccess(new FormData(form));
+      toggleSubmit();
     }
   });
-  input.addEventListener('change', onFormClick);
+
+  input.addEventListener('change', onClickButtonForm);
   addEffect();
 };
 
-export { initImage };
+export { setFormSubmit, pristineReset, cancellationOfSending };

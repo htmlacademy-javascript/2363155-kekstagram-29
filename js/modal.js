@@ -1,6 +1,5 @@
 import { isEscapeKey } from './utils.js';
 import { createPictureModal, moreButton, onMoreButtonClick } from './gallery-modal.js';
-import { openModal, closeModal } from './popup.js';
 
 
 const posts = document.querySelector('.pictures');
@@ -10,7 +9,8 @@ const body = document.querySelector('body');
 
 
 const onCloseButtonClick = () => {
-  closeModal(modal, body);
+  modal.classList.add('hidden');
+  body.classList.remove('modal-open');
   buttonCloseModal.removeEventListener('click', onCloseButtonClick);
   moreButton.removeEventListener('click', onMoreButtonClick);
   document.removeEventListener('keydown', onDocumentKey);
@@ -18,7 +18,8 @@ const onCloseButtonClick = () => {
 
 
 const onLinkClick = () => {
-  openModal(modal, body);
+  modal.classList.remove('hidden');
+  body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKey);
   buttonCloseModal.addEventListener('click', onCloseButtonClick);
 };
@@ -45,4 +46,3 @@ const renderGallery = (picture) => {
 
 
 export { onLinkClick, renderGallery };
-
