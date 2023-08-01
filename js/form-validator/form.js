@@ -22,7 +22,7 @@ const VALIDATOR_PARAMS = {
   },
   hashtagLength: {
     isValid:  (value) => normalizeString(value).length <= MAX_COUNT_HASHTAGS,
-    errorText: `Максимум Хэштегов ${MAX_COUNT_HASHTAGS}`
+    errorText: `Неправильный Хэштег ${MAX_COUNT_HASHTAGS}`
   },
   descriptionLength: {
     isValid: (value) => value.length <= 140,
@@ -96,6 +96,7 @@ const toggleSubmit = (isDisabled) => {
   submitButton.disabled = isDisabled;
   submitButton.textContent = isDisabled ? SubmitButtonText.LOADING : SubmitButtonText.DEFAULT;
 };
+
 const setFormSubmit = (onSuccess) => {
   form.addEventListener('submit', async(evt) => {
     evt.preventDefault();

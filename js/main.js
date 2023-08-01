@@ -1,9 +1,3 @@
-
-//import { initImage } from './validator/form.js';
-//renderThumbnail(createPostsData);
-//renderGallery(createPostsData);
-//initImage();
-
 import { renderThumbnail } from './gallery.js';
 import { renderGallery } from './modal.js';
 import { setFormSubmit } from './form-validator/form.js';
