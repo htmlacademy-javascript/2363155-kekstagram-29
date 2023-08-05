@@ -33,7 +33,7 @@ function onDocumentKey(evt) {
   }
 }
 
-const showMessageError = () => showMessage(thumbnailError, '.error__button');
-const showMessageSuccess = () => showMessage(thumbnailSuccess, '.success__button');
+const showErrorMessage = () => showMessage(thumbnailError, '.error__button');
+const showSuccessMessage = () => showMessage(thumbnailSuccess, '.success__button');
 
-export { showMessageError, showMessageSuccess };
+export { showErrorMessage, showSuccessMessage };
