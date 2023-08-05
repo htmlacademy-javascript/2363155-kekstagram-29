@@ -1,4 +1,4 @@
-import { onLinkClick } from './modal.js';
+import { showModal } from './modal.js';
 import { createElement } from './utils.js';
 
 const COMMENTS_TO_SHOW = 5;
@@ -40,10 +40,10 @@ const renderComments = (data) => {
   return fragment;
 };
 
-const initMoreComments = () => {
+const renderMoreComments = () => {
   const moreComments = currentComments.slice(modalCommentsList.children.length, modalCommentsList.children.length + COMMENTS_TO_SHOW);
-  const renderMoreComments = renderComments(moreComments);
-  modalCommentsList.append(renderMoreComments);
+  const initMoreComments = renderComments(moreComments);
+  modalCommentsList.append(initMoreComments);
 
   if (currentComments.length === modalCommentsList.children.length) {
     modalMoreButton.classList.add('hidden');
@@ -53,11 +53,11 @@ const initMoreComments = () => {
   modalCountComment.textContent = currentComments.length;
 };
 
-const onMoreButtonClick = () => initMoreComments();
+const onMoreButtonClick = () => renderMoreComments();
 
-const showPartComments = (comments) => {
+const renderFirstComments = (comments) => {
   const toShowComments = comments.slice(0, COMMENTS_TO_SHOW);
-  const renderFirstComments = renderComments(toShowComments);
+  const initFirstComments = renderComments(toShowComments);
 
   if (toShowComments.length === comments.length) {
     modalMoreButton.classList.add('hidden');
@@ -66,12 +66,12 @@ const showPartComments = (comments) => {
     modalMoreButton.addEventListener('click', onMoreButtonClick);
   }
 
-  modalCommentsList.append(renderFirstComments);
+  modalCommentsList.append(initFirstComments);
   modalMoreCommentsButton.textContent = toShowComments.length;
   modalCountComment.textContent = comments.length;
 };
 
-const createPictureModal = (data) => {
+const renderPictureModal = (data) => {
   const {url, likes, comments, description} = data;
   modalImage.src = url;
   modalLikesCount.textContent = likes;
@@ -80,8 +80,8 @@ const createPictureModal = (data) => {
 
   modalCommentsList.innerHTML = '';
   currentComments = comments;
-  showPartComments(comments);
-  onLinkClick(data);
+  renderFirstComments(comments);
+  showModal();
 };
 
-export { createPictureModal, onMoreButtonClick, modalMoreButton};
+export { renderPictureModal, onMoreButtonClick, modalMoreButton};

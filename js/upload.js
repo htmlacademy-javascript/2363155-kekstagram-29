@@ -16,25 +16,25 @@ const closeModalForm = () => {
   pristineReset();
   formElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKey);
+  document.removeEventListener('keydown', onDocumentKeydown);
   closeFormButton.removeEventListener('click', closeModalForm);
   initEffect(currentEffect);
 };
 
-const onClickButtonClose = () => closeModalForm();
-const onEffectClick = (evt) => initEffect(evt.target.value);
+const onCloseFormButtonClick = () => closeModalForm();
+const onEffectListChange = (evt) => initEffect(evt.target.value);
 
 const openModalForm = () => {
   initEffect(currentEffect);
   formElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKey);
-  closeFormButton.addEventListener('click', onClickButtonClose);
-  effectList.addEventListener('change', onEffectClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  closeFormButton.addEventListener('click', onCloseFormButtonClick);
+  effectList.addEventListener('change', onEffectListChange);
 };
 
 
-function onDocumentKey (evt) {
+function onDocumentKeydown (evt) {
   const error = document.querySelector('.error');
   if (isEscapeKey(evt) && !isElementFocused() && !error) {
     evt.preventDefault();

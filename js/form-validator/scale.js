@@ -2,8 +2,8 @@ const STEP = 25;
 const MAX_SCALE = 100;
 const MIN_SCALE = 25;
 const modalElement = document.querySelector('.img-upload__scale');
-const minusButtonScale = modalElement.querySelector('.scale__control--smaller');
-const plusButtonScale = modalElement.querySelector('.scale__control--bigger');
+const stepDownButton = modalElement.querySelector('.scale__control--smaller');
+const stepUpButton = modalElement.querySelector('.scale__control--bigger');
 const fieldValue = modalElement.querySelector('.scale__control--value');
 const modalImage = document.querySelector('.img-upload__preview img');
 
@@ -19,17 +19,17 @@ const resetScaleValue = () => {
   setScaleValue();
 };
 
-const onScaleButtonMinus = () => {
+const onStepDownButtonClick = () => {
   scaleValue = Math.max(scaleValue - STEP, MIN_SCALE);
   setScaleValue();
 };
 
-const onScaleButtoPlus = () => {
+const onStepUpButtonClick = () => {
   scaleValue = Math.min(scaleValue + STEP, MAX_SCALE);
   setScaleValue();
 };
 
-minusButtonScale.addEventListener('click', onScaleButtonMinus);
-plusButtonScale.addEventListener('click', onScaleButtoPlus);
+stepDownButton.addEventListener('click', onStepDownButtonClick);
+stepUpButton.addEventListener('click', onStepUpButtonClick);
 
 export { resetScaleValue };

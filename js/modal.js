@@ -1,5 +1,5 @@
 import { isEscapeKey } from './utils.js';
-import { createPictureModal, modalMoreButton, onMoreButtonClick } from './gallery-modal.js';
+import { renderPictureModal, modalMoreButton, onMoreButtonClick } from './gallery-modal.js';
 
 const posts = document.querySelector('.pictures');
 const modal = document.querySelector('.big-picture');
@@ -14,7 +14,7 @@ const onCloseButtonClick = () => {
   document.removeEventListener('keydown', onDocumentKey);
 };
 
-const onLinkClick = () => {
+const showModal = () => {
   modal.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKey);
@@ -27,7 +27,7 @@ function onDocumentKey (evt) {
   }
 }
 
-const renderModal = (pictures) => {
+const initializeModal = (pictures) => {
   posts.addEventListener('click', (evt) => {
     const target = evt.target.closest('.picture');
     let postId;
@@ -36,9 +36,9 @@ const renderModal = (pictures) => {
       const postData = pictures.find((post) => post.id === postId);
       evt.preventDefault();
 
-      createPictureModal(postData);
+      renderPictureModal(postData);
     }
   });
 };
 
-export { onLinkClick, renderModal };
+export { showModal, initializeModal };

@@ -37,7 +37,7 @@ const SubmitButtonText = {
 };
 
 function normalizeString (str) {
-  return str.trim().split(' ').filter((tag) => Boolean(tag.length));
+  return str.split(' ').filter(Boolean);
 }
 
 const onClickButtonForm = () => openModalForm();

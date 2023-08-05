@@ -24,7 +24,7 @@ const getFilter = () => {
   }
 };
 
-const onContainerButtonClick = (callback) => {
+const setFilterButtonClickHandler = (callback) => {
   filterButtons.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
@@ -44,7 +44,7 @@ const onContainerButtonClick = (callback) => {
 const initFilters = (loader, callback) => {
   filterButtons.classList.remove('img-filters--inactive');
   pictures = [...loader];
-  onContainerButtonClick(callback);
+  setFilterButtonClickHandler(callback);
 };
 
 export { initFilters, getFilter };
